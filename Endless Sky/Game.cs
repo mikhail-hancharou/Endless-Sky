@@ -7,7 +7,7 @@ namespace Endless_Sky
     class Game
     {
         GameWindow window;
-        Ship myShip = new Ship(50, 4, 1.0, 350, 0, 90, 350, true);
+        Ship myShip = new Ship(3, 4, 0.3, 350, 0, 90, 350, true);
         //Space space = new Space();
         Draw draw = new Draw();
         float temp = 0;
@@ -40,11 +40,24 @@ namespace Endless_Sky
             }
             else if (e.KeyChar == 'w')
             {
-                myShip.rotateAngel %= 360;
-                Console.WriteLine(myShip.rotateAngel / 180);
+                //myShip.rotateAngel %= 360;
                 myShip.speedX += Math.Cos(myShip.rotateAngel * Math.PI / 180) * myShip.maxSpeedStep;
                 myShip.speedY += Math.Sin(myShip.rotateAngel * Math.PI / 180) * myShip.maxSpeedStep;
-                Console.WriteLine("{0} - {1}", myShip.speedX, myShip.speedY);
+
+                myShip.speedX %= myShip.maxSpeed;
+                myShip.speedY %= myShip.maxSpeed;
+
+                double spX = Math.Pow(myShip.speedX, 2.0);
+                double spY = Math.Pow(myShip.speedY, 2.0);
+                double spMax = Math.Pow(myShip.maxSpeed, 2.0);
+
+                if (spX + spY > spMax)
+                {
+                    myShip.speedX -= (Math.Sqrt(spX + spY - spMax) * myShip.speedX) / (Math.Abs(myShip.speedX) + Math.Abs(myShip.speedY));
+                    myShip.speedY -= (Math.Sqrt(spX + spY - spMax) * myShip.speedY) / (Math.Abs(myShip.speedX) + Math.Abs(myShip.speedY));
+                    Console.WriteLine(myShip.rotateAngel / 180);
+                    Console.WriteLine("{0} - {1}", myShip.speedX, myShip.speedY);
+                }
             }
         }
 
@@ -53,6 +66,7 @@ namespace Endless_Sky
 
         }
 
+        double tmp = -500.0;
         void resize(object o, EventArgs e)
         {
             GL.Viewport(0, 0, window.Width, window.Height);
@@ -69,25 +83,24 @@ namespace Endless_Sky
 
         void renderF(object o, EventArgs e)
         {
-            //GL.LoadIdentity();
             GL.Clear(ClearBufferMask.ColorBufferBit);
-
-            GL.PushMatrix();
-
-            GL.PopMatrix();
+            GL.LoadIdentity();
 
             draw.drawSpace(myShip);
+            GL.Translate(myShip.coordX, myShip.coordY, 0);
             draw.drawShip(myShip);
 
-            GL.Translate(myShip.speedX, 0.0, 0.0);
-            GL.Translate(0.0, myShip.speedY, 0.0);
+            GL.Viewport(0, 0, window.Width, window.Height);
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+            GL.Ortho(-500.0 + myShip.coordX, 500.0 + myShip.coordX, -280.0 + myShip.coordY, 280.0 + +myShip.coordY, -1.0, 1.0);
+            GL.MatrixMode(MatrixMode.Modelview);
 
-            //GL.LoadIdentity();
-            //GL.Begin(BeginMode.Points);
-            //GL.PointSize(10);
-            //GL.Vertex2(0.0, temp++);
-            //GL.End();
-            //GL.PopMatrix();
+            GL.PointSize(8);
+            GL.Begin(BeginMode.Points);
+            GL.Vertex2(0, 0);
+            GL.End();
+
             window.SwapBuffers();
         }
     }

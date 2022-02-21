@@ -29,6 +29,30 @@ namespace Endless_Sky
 
             GL.Rotate(myShip.rotateAngel, 0, 0, 1);
             GL.Begin(BeginMode.TriangleFan);
+            GL.Color3(1.0, 0.0, 0.0);
+            GL.Vertex2(0, 0);
+            GL.Color3(0.5, 0.5, 0.5);
+            GL.Vertex2(0, 6.0);
+            GL.Vertex2(-4.0, 4.0);
+            GL.Vertex2(-6.0, 0);
+            GL.Vertex2(-4.0, -4.0);
+            GL.Vertex2(0, -6.0);
+
+            GL.Vertex2(0, 5.0);
+            GL.Vertex2(9.0, 1.0);
+            GL.Vertex2(9.0, -1.0);
+            GL.Vertex2(0, -5.0);
+            GL.End();
+
+            GL.PopMatrix();
+
+            myShip.coordX += myShip.speedX;
+            myShip.coordY += myShip.speedY;
+            /*
+            GL.PushMatrix();
+
+            GL.Rotate(myShip.rotateAngel, 0, 0, 1);
+            GL.Begin(BeginMode.TriangleFan);
                 GL.Color3(1.0, 0.0, 0.0);
                 GL.Vertex2(myShip.coordX, myShip.coordY);
                 GL.Color3(0.5, 0.5, 0.5);
@@ -60,6 +84,7 @@ namespace Endless_Sky
             //GL.Vertex2(-1.0, 9.0);
             //GL.Vertex2(1.0, 9.0);
             //GL.Vertex2(5.0, 0.0);
+            */
         }
     }
 }
