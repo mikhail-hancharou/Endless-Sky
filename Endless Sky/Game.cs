@@ -44,8 +44,8 @@ namespace Endless_Sky
                 myShip.speedX += Math.Cos(myShip.rotateAngel * Math.PI / 180) * myShip.maxSpeedStep;
                 myShip.speedY += Math.Sin(myShip.rotateAngel * Math.PI / 180) * myShip.maxSpeedStep;
 
-                myShip.speedX %= myShip.maxSpeed;
-                myShip.speedY %= myShip.maxSpeed;
+                //myShip.speedX %= myShip.maxSpeed;
+                //myShip.speedY %= myShip.maxSpeed;
 
                 double spX = Math.Pow(myShip.speedX, 2.0);
                 double spY = Math.Pow(myShip.speedY, 2.0);
@@ -66,7 +66,6 @@ namespace Endless_Sky
 
         }
 
-        double tmp = -500.0;
         void resize(object o, EventArgs e)
         {
             GL.Viewport(0, 0, window.Width, window.Height);
@@ -87,7 +86,7 @@ namespace Endless_Sky
             GL.LoadIdentity();
 
             draw.drawSpace(myShip);
-            GL.Translate(myShip.coordX, myShip.coordY, 0);
+            //GL.Translate(myShip.coordX, myShip.coordY, 0);
             draw.drawShip(myShip);
 
             GL.Viewport(0, 0, window.Width, window.Height);
