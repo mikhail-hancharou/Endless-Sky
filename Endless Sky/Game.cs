@@ -12,6 +12,7 @@ namespace Endless_Sky
         Space space = new Space();
         Draw draw = new Draw();
         Controls control = new Controls();
+        EnemySpawner spawn = new EnemySpawner();
 
         public Game(GameWindow window)
         {
