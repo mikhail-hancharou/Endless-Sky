@@ -18,6 +18,11 @@ namespace Endless_Sky
                 GL.Vertex2(2500, i);
                 GL.Vertex2(-2500, i);
                 GL.End();
+
+                GL.PointSize(8);
+                GL.Begin(BeginMode.Points);
+                GL.Vertex2(0, 0);
+                GL.End();
             }
         }
     }

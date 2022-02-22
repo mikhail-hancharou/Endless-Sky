@@ -1,6 +1,7 @@
 ﻿using System;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
 
 namespace Endless_Sky
 {
@@ -13,6 +14,8 @@ namespace Endless_Sky
         Draw draw = new Draw();
         Controls control = new Controls();
         EnemySpawner spawn = new EnemySpawner();
+        int time = 0;
+        int upTime = 0;
 
         public Game(GameWindow window)
         {
@@ -31,29 +34,24 @@ namespace Endless_Sky
         }
         void keyPress(object o, KeyPressEventArgs e)
         {
-            Console.WriteLine("Key {0}", e.KeyChar);
-            Console.WriteLine(me.rotateAngel);
-            if (e.KeyChar == 'a')
-            {
-                control.turnLeft(me);
-            }
-            else if (e.KeyChar == 'd')
-            {
-                control.turnRight(me);
-            }
-            else if (e.KeyChar == 'w')
-            {
-                control.up(me);
-            }
-            else if (e.KeyChar == ' ')
-            {
-                control.reduce(me);
-            }
-        }
-
-        void updateF(object o, EventArgs e)
-        {
-
+            //Console.WriteLine("Key {0}", e.KeyChar);
+            //Console.WriteLine(me.rotateAngel);
+            //if (e.KeyChar == 'a')
+            //{
+            //    control.turnLeft(me);
+            //}
+            //if (e.KeyChar == 'd')
+            //{
+            //    control.turnRight(me);
+            //}
+            //if (e.KeyChar == 'w')
+            //{
+            //    control.up(me);
+            //}
+            //if (e.KeyChar == ' ')
+            //{
+            //    control.reduce(me);
+            //}
         }
 
         void resize(object o, EventArgs e)
@@ -70,13 +68,46 @@ namespace Endless_Sky
             GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         }
 
+        void updateF(object o, EventArgs e)
+        {
+            ++upTime;
+            if (upTime == 60)
+            {
+                upTime = 0;
+                Console.WriteLine("-----update-----");
+            }
+
+            KeyboardState keyState = Keyboard.GetState();
+            if (keyState.IsKeyDown(Key.W))
+            {
+                control.up(me);
+            }
+            if (keyState.IsKeyDown(Key.A))
+            {
+                control.turnLeft(me);
+            }
+            if (keyState.IsKeyDown(Key.D))
+            {
+                control.turnRight(me);
+            }
+            if (keyState.IsKeyDown(Key.Space))
+            {
+                control.reduce(me);
+            }
+        }
+
         void renderF(object o, EventArgs e)
         {
+            ++time;
+            if (time == 60)
+            {
+                time = 0;
+                Console.WriteLine("{0} time", time);
+            }
+
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.LoadIdentity();
 
-            //draw.TestDraw(space);
-            //draw.TestDraw(me);
             draw.drawAll(space, me);
 
             window.SwapBuffers();
