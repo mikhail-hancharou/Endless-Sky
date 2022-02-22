@@ -1,34 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using OpenTK.Graphics.OpenGL;
 
 namespace Endless_Sky
 {
-    public class Ship
+    public class Ship : IDraw
     {
         public readonly int maxSpeed;
         public readonly int maxRotateStep;
         public readonly double maxSpeedStep;
         public readonly int maxHP;
         public readonly int maxShield;
-        public double speedX = 0;
-        public double speedY = 0;
-        public double coordX = 0;
-        public double coordY = 0;
-        public double rotateAngel = 0;
         public int hp;
-        public bool team;
+        public Shape shape;
 
-        public Ship(int maxSpeed, int maxRotateSpeed, double maxSpeedStep, int maxHP, int maxShield, double rotateAngel, int hp, bool team = true)
+        public Ship(int shape, int maxSpeed, int maxRotateStep, double maxSpeedStep, int maxHP, int maxShield, int hp)
         {
+            this.shape = new Shape(shape);
             this.maxSpeed = maxSpeed;
-            this.maxRotateStep = maxRotateSpeed;
+            this.maxRotateStep = maxRotateStep;
             this.maxSpeedStep = maxSpeedStep;
             this.maxHP = maxHP;
             this.maxShield = maxShield;
-            this.rotateAngel = rotateAngel;
             this.hp = hp;
-            this.team = team;
+        }
+
+        public void draw()
+        {
+            shape.draw();
         }
     }
 }
