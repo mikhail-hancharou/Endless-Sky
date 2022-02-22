@@ -63,8 +63,60 @@ namespace Endless_Sky
                     GL.End();
                     break;
                 case 2:
+                    GL.Begin(BeginMode.TriangleFan);
+                    GL.Color3(1.0, 0.0, 0.0);
+                    GL.Vertex2(0, 0);
+                    GL.Color3(0.5, 0.5, 0.5);
+                    GL.Vertex2(0, 5.0);
+                    GL.Vertex2(-5, 7.0);
+                    GL.Vertex2(-4, 4.0);
+
+                    GL.Vertex2(0, 5.0);
+                    GL.Vertex2(10.0, 2.0);
+                    GL.Vertex2(8.0, 0.0);
+                    GL.End();
+
+                    GL.Begin(BeginMode.TriangleFan);
+                    GL.Color3(1.0, 0.0, 0.0);
+                    GL.Vertex2(0, 0);
+                    GL.Color3(0.5, 0.5, 0.5);
+                    GL.Vertex2(0, -5.0);
+                    GL.Vertex2(-5, -7.0);
+                    GL.Vertex2(-4, -4.0);
+
+                    GL.Vertex2(0, -5.0);
+                    GL.Vertex2(10.0, -2.0);
+                    GL.Vertex2(8.0, 0.0);
+                    GL.End();
                     break;
                 case 3:
+                    GL.Begin(BeginMode.TriangleFan);
+                    GL.Color3(1.0, 0.0, 0.0);
+                    GL.Vertex2(0, 0);
+                    GL.Color3(0.5, 0.5, 0.5);
+                    GL.Vertex2(-2, 8.0);
+                    GL.Vertex2(-5, 8.0);
+                    GL.End();
+
+                    GL.Begin(BeginMode.TriangleFan);
+                    GL.Color3(1.0, 0.0, 0.0);
+                    GL.Vertex2(0, 0);
+                    GL.Color3(0.5, 0.5, 0.5);
+                    GL.Vertex2(-2, -8.0);
+                    GL.Vertex2(-5, -8.0);
+                    GL.End();
+
+                    GL.Begin(BeginMode.TriangleFan);
+                    GL.Color3(1.0, 0.0, 0.0);
+                    GL.Vertex2(0, 0);
+                    GL.Color3(0.5, 0.5, 0.5);
+                    GL.Vertex2(-2, 3.0);
+                    GL.Vertex2(8, 1.0);
+                    GL.Vertex2(8, -1.0);
+                    GL.Vertex2(-2, -3.0);
+                    GL.Vertex2(-4, 0.0);
+                    GL.Vertex2(-2, 3.0);
+                    GL.End();
                     break;
                 default:
                     break;

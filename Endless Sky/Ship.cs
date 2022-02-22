@@ -9,7 +9,7 @@ namespace Endless_Sky
     {
         public readonly int maxSpeed;
         public readonly int maxRotateStep;
-        public readonly double maxSpeedStep;
+        public double maxSpeedStep;
         public readonly int maxHP;
         public readonly int maxShield;
         public int hp;

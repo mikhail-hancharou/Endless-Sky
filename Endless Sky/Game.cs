@@ -13,7 +13,7 @@ namespace Endless_Sky
         Space space = new Space();
         Draw draw = new Draw();
         Controls control = new Controls();
-        EnemySpawner spawn = new EnemySpawner();
+        EnemySpawner spawn = new EnemySpawner(true);
         int time = 0;
         int upTime = 0;
 
@@ -74,7 +74,8 @@ namespace Endless_Sky
             if (upTime == 60)
             {
                 upTime = 0;
-                Console.WriteLine("-----update-----");
+                time++;
+                Console.WriteLine("-----update----- {0}", time);
             }
 
             KeyboardState keyState = Keyboard.GetState();
@@ -98,17 +99,10 @@ namespace Endless_Sky
 
         void renderF(object o, EventArgs e)
         {
-            ++time;
-            if (time == 60)
-            {
-                time = 0;
-                Console.WriteLine("{0} time", time);
-            }
-
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.LoadIdentity();
 
-            draw.drawAll(space, me);
+            draw.drawAll(space, me, spawn);
 
             window.SwapBuffers();
         }

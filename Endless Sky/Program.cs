@@ -3,7 +3,7 @@ using OpenTK;
 
 namespace Endless_Sky
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {

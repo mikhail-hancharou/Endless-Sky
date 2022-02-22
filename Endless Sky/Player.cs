@@ -36,10 +36,13 @@ namespace Endless_Sky
 
             GL.PopMatrix();
 
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadIdentity();
-            GL.Ortho(-500.0 + coordX, 500.0 + coordX, -280.0 + coordY, 280.0 + coordY, -1.0, 1.0);
-            GL.MatrixMode(MatrixMode.Modelview);
+            if (team)
+            {
+                GL.MatrixMode(MatrixMode.Projection);
+                GL.LoadIdentity();
+                GL.Ortho(-500.0 + coordX, 500.0 + coordX, -280.0 + coordY, 280.0 + coordY, -1.0, 1.0);
+                GL.MatrixMode(MatrixMode.Modelview);
+            }
         }
     }
 }
