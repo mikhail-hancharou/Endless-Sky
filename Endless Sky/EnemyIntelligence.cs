@@ -4,67 +4,34 @@ using System.Text;
 
 namespace Endless_Sky
 {
-    public class EnemySpawner : IDraw
+    class EnemyIntelligence
     {
-        const int maxAmount = 3;
-        public int currentAmount = 0;
-        public List<Player> enemies = new List<Player>();
-        private Controls control;
-        private double deltaX;
+        double deltaX;
         private double deltaY;
         private double hypotenuse;
         private Player superPlayer;
-        private EnemyIntelligence enemyIntelligence;
-        public EnemySpawner(Controls control, Player superPlayer, bool spawn)
+        public List<Player> enemies = new List<Player>();
+        private Controls control;
+
+        public EnemyIntelligence(Controls control, Player superPlayer, List<Player> enemies)
         {
-            this.superPlayer = superPlayer;
             this.control = control;
-            if (spawn)
-            {
-                int maxSpeed = 2;
-                int maxRotateStep = 2;
-                double maxSpeedStep = 0.3;
-                int maxHP = 350;
-                int maxShield = 0;
-                int hp = 350;
-                int coordX = 50;
-                int coordY = -50;
-                for (int i = 1; i <= maxAmount; i++)
-                {
-                    int shape = i;
-
-                    Player player = new Player(new Ship(shape, new Weapon(130, 2), maxSpeed++, maxRotateStep++,
-                        maxSpeedStep, maxHP, maxShield, hp), coordX, coordY, 90, false);
-                    coordY += 50;
-
-                    enemies.Add(player);
-                }
-
-                enemyIntelligence = new EnemyIntelligence(control, superPlayer, enemies);
-            }
+            this.superPlayer = superPlayer;
+            this.enemies = enemies;
         }
 
-        public void draw()
+        public void enemiesLogic(Player superPlayer)
         {
             foreach (Player p in enemies)
             {
-                p.draw();
+                if (!p.team)
+                {
+                    deltaX = superPlayer.coordX - p.coordX;
+                    deltaY = superPlayer.coordY - p.coordY;
+                    hypotenuse = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
+                    needToMove(p, superPlayer, needToTurn(p));
+                }
             }
-        }
-
-        public void enemyIntelligenceMethod(Player superPlayer)
-        {
-            enemyIntelligence.enemiesLogic(superPlayer);
-            //foreach (Player p in enemies)
-            //{
-            //    if (!p.team)
-            //    {
-            //        deltaX = superPlayer.coordX - p.coordX;
-            //        deltaY = superPlayer.coordY - p.coordY;
-            //        hypotenuse = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
-            //        needToMove(p, superPlayer, needToTurn(p));
-            //    }
-            //}
         }
 
         public double needToTurn(Player p)
@@ -94,7 +61,7 @@ namespace Endless_Sky
         }
 
         public void needToMove(Player p, Player superP, double angle)
-        { 
+        {
             //hypotenuse = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
             if (p.ship.gun.maxRange < hypotenuse)
             {

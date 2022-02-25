@@ -34,6 +34,7 @@ namespace Endless_Sky
             {
                 ship.gun.tracer();
                 shooting = false;
+                ship.gun.actualRange = ship.gun.maxRange;
             }
             ship.draw();
 

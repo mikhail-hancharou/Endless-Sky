@@ -10,12 +10,12 @@ namespace Endless_Sky
 
         public void turnLeft(Player player)
         {
-            player.rotateAngel += player.ship.maxRotateStep / 2;
+            player.rotateAngel += player.ship.maxRotateStep;
         }
 
         public void turnRight(Player player)
         {
-            player.rotateAngel -= player.ship.maxRotateStep / 2;
+            player.rotateAngel -= player.ship.maxRotateStep;
         }
 
         public void up(Player player)

@@ -8,12 +8,14 @@ namespace Endless_Sky
     public class Weapon
     {
         public readonly int maxRange;
+        public int actualRange;
         public readonly int damagePT;//damage per tick
 
         public Weapon(int maxRange, int damagePT)
         {
             this.maxRange = maxRange;
             this.damagePT = damagePT;
+            actualRange = maxRange;
         }
 
         public void tracer()
@@ -22,10 +24,16 @@ namespace Endless_Sky
             GL.LineWidth(2);
             GL.Color3(1.0, 0.274, 0.0);
             GL.Vertex2(0, 1);
-            GL.Vertex2(maxRange, 0);
+            GL.Vertex2(actualRange, 1);
             GL.Vertex2(0, -1);
-            GL.Vertex2(maxRange, 0);
+            GL.Vertex2(actualRange, -1);
             GL.End();
+
+            //GL.PointSize(20);
+            //GL.Begin(BeginMode.Points);
+            //GL.Color3(1.0, 0.274, 0.0);
+            //GL.Vertex2(maxRange, 0);
+            //GL.End();
         }
     }
 }

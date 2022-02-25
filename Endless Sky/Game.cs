@@ -10,18 +10,18 @@ namespace Endless_Sky
         public GameWindow window;
         //Ship myShip = new Ship(0, 3, 4, 0.3, 350, 0, 350);
         //Weapon gun = new Weapon(40, 2);
-        Player me = new Player(new Ship(0, new Weapon(130, 2), 3, 4, 0.3, 350, 0, 350), 0, 0, 90, true);
+        Player me = new Player(new Ship(0, new Weapon(130, 2), 3, 2, 0.3, 350, 0, 350), 0, 0, 90, true);
         Space space = new Space();
         Draw draw = new Draw();
         Controls control = new Controls();
-        EnemySpawner spawn;
+        EnemySpawner enemies;
         int time = 0;
         int upTime = 0;
 
         public Game(GameWindow window)
         {
             this.window = window;
-            spawn = new EnemySpawner(control, true);
+            enemies = new EnemySpawner(control, me, true);
             Start();
         }
 
@@ -102,7 +102,7 @@ namespace Endless_Sky
                 control.shoot(me);
             }
 
-            spawn.enemyIntelligence(me);
+            enemies.enemyIntelligenceMethod(me);
         }
 
         void renderF(object o, EventArgs e)
@@ -110,7 +110,7 @@ namespace Endless_Sky
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.LoadIdentity();
 
-            draw.drawAll(space, me, spawn);
+            draw.drawAll(space, me, enemies);
 
             window.SwapBuffers();
         }
