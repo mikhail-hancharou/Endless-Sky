@@ -10,13 +10,17 @@ namespace Endless_Sky
         public int currentAmount = 0;
         public List<Player> enemies = new List<Player>();
         private Controls control;
+        private double deltaX;
+        private double deltaY;
+        private double hypotenuse;
         public EnemySpawner(Controls control, bool spawn)
         {
             this.control = control;
             if (spawn)
             {
-                int maxSpeed = 3;
-                int maxRotateStep = 4;
+                Weapon gun = new Weapon(130, 2);
+                int maxSpeed = 2;
+                int maxRotateStep = 3;
                 double maxSpeedStep = 0.3;
                 int maxHP = 350;
                 int maxShield = 0;
@@ -27,7 +31,7 @@ namespace Endless_Sky
                 {
                     int shape = i;
 
-                    Player player = new Player(new Ship(shape, maxSpeed, maxRotateStep,
+                    Player player = new Player(new Ship(shape, gun, maxSpeed++, maxRotateStep++,
                         maxSpeedStep, maxHP, maxShield, hp), coordX, coordY, 90, false);
                     coordY += 50;
 
@@ -50,32 +54,19 @@ namespace Endless_Sky
             {
                 if (!p.team)
                 {
-                    needToTurn(p, superPlayer);
+                    deltaX = superPlayer.coordX - p.coordX;
+                    deltaY = superPlayer.coordY - p.coordY;
+                    hypotenuse = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
+                    //needToTurn(p);
+                    needToMove(p, superPlayer, needToTurn(p));
                 }
             }
         }
 
-        public void needToTurn(Player p, Player superP)
+        public double needToTurn(Player p)
         {
-            Console.WriteLine($"{superP.coordX} --- {superP.coordY}");
-            double deltaX = superP.coordX - p.coordX;
-            double deltaY = superP.coordY - p.coordY;
-            //double hypotenuse = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
-            double angle = Math.Abs(Math.Atan(deltaY / deltaX));
-            angle = (angle / Math.PI) * 180;
-
-            if (deltaX < 0 && deltaY < 0)
-            {
-                angle += 180;
-            }
-            else if (deltaX < 0 && deltaY > 0)
-            {
-                angle = 180 - angle;
-            }
-            else if (deltaX > 0 && deltaY < 0)
-            {
-                angle = 360 - angle;
-            }
+            double angle = Math.Abs(Math.Asin(deltaY / hypotenuse));
+            angle = normalizeAngle(angle, deltaX, deltaY);
 
             double temp = p.rotateAngel % 360;
 
@@ -89,11 +80,62 @@ namespace Endless_Sky
             {
                 control.turnRight(p);
             }
+
+            return angle;
         }
 
-        public void needToMove(Player p, Player superP)
-        {
+        public void needToMove(Player p, Player superP, double angle)
+        { 
+            hypotenuse = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
+            if (p.ship.gun.maxRange < hypotenuse)
+            {
+                control.up(p);
+            }
+            else
+            {
+                if (Math.Abs(angle) < 15)
+                {
+                    control.shoot(p); //angle between two angels should be less then 15 to start shooting
+                }
 
+                double angleSP = speedAngle(superP);
+                double angleP = speedAngle(p);
+                double temp = Math.Abs(angleSP - angleP);
+                angle = temp < 180 ? temp : 360 - temp;
+                if (angle > 45)
+                {
+                    control.reduce(p);
+                    Console.WriteLine("reduse {0}", p.ship.shape);
+                }
+            }
+        }
+
+        private double speedAngle(Player p)
+        {
+            hypotenuse = Math.Sqrt(Math.Pow(p.speedX, 2) + Math.Pow(p.speedY, 2));
+            double angle = Math.Abs(Math.Asin(p.speedY / hypotenuse));
+            angle = normalizeAngle(angle, p.speedX, p.speedY);
+            return angle;
+        }
+
+        private double normalizeAngle(double angle, double X, double Y)
+        {
+            angle = (angle / Math.PI) * 180;
+
+            if (X < 0 && Y < 0)
+            {
+                angle += 180;
+            }
+            else if (X < 0 && Y > 0)
+            {
+                angle = 180 - angle;
+            }
+            else if (X > 0 && Y < 0)
+            {
+                angle = 360 - angle;
+            }
+
+            return angle;
         }
     }
 }

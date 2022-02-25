@@ -8,8 +8,9 @@ namespace Endless_Sky
     class Game
     {
         public GameWindow window;
-        Ship myShip = new Ship(0, 3, 4, 0.3, 350, 0, 350);
-        Player me = new Player(new Ship(0, 3, 4, 0.3, 350, 0, 350), 0, 0, 90, true);
+        //Ship myShip = new Ship(0, 3, 4, 0.3, 350, 0, 350);
+        //Weapon gun = new Weapon(40, 2);
+        Player me = new Player(new Ship(0, new Weapon(130, 2), 3, 4, 0.3, 350, 0, 350), 0, 0, 90, true);
         Space space = new Space();
         Draw draw = new Draw();
         Controls control = new Controls();
@@ -95,6 +96,10 @@ namespace Endless_Sky
             if (keyState.IsKeyDown(Key.Space))
             {
                 control.reduce(me);
+            }
+            if (keyState.IsKeyDown(Key.ShiftLeft))
+            {
+                control.shoot(me);
             }
 
             spawn.enemyIntelligence(me);

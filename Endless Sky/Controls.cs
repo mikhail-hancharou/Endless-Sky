@@ -10,12 +10,12 @@ namespace Endless_Sky
 
         public void turnLeft(Player player)
         {
-            player.rotateAngel += player.ship.maxRotateStep;
+            player.rotateAngel += player.ship.maxRotateStep / 2;
         }
 
         public void turnRight(Player player)
         {
-            player.rotateAngel -= player.ship.maxRotateStep;
+            player.rotateAngel -= player.ship.maxRotateStep / 2;
         }
 
         public void up(Player player)
@@ -53,8 +53,16 @@ namespace Endless_Sky
             //player.speedY = player.speedY < 0 ? 0 : player.speedY;
             double bothSpeed = (Math.Abs(player.speedX) + Math.Abs(player.speedY));
 
-            player.speedX -= player.ship.maxSpeedStep * player.speedX / (bothSpeed * 10);
-            player.speedY -= player.ship.maxSpeedStep * player.speedY / (bothSpeed * 10);
+            if (bothSpeed != 0)
+            {
+                player.speedX -= player.ship.maxSpeedStep * player.speedX / (bothSpeed * 10);
+                player.speedY -= player.ship.maxSpeedStep * player.speedY / (bothSpeed * 10);
+            }
+        }
+
+        public void shoot(Player player)
+        {
+            player.shooting = true;
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Endless_Sky
         public double coordX = 0;
         public double coordY = 0;
         public double rotateAngel = 0;
+        public bool shooting = false;
 
         public Player(Ship ship, double coordX, double coordY, double rotateAngel, bool team = true)
         {
@@ -29,6 +30,11 @@ namespace Endless_Sky
             GL.PushMatrix();
             GL.Translate(coordX, coordY, 0);
             GL.Rotate(rotateAngel, 0, 0, 1);
+            if (shooting)
+            {
+                ship.gun.tracer();
+                shooting = false;
+            }
             ship.draw();
 
             coordX += speedX;

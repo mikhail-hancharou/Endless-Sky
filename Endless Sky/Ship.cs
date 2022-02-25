@@ -14,10 +14,12 @@ namespace Endless_Sky
         public readonly int maxShield;
         public int hp;
         public Shape shape;
+        public Weapon gun;
 
-        public Ship(int shape, int maxSpeed, int maxRotateStep, double maxSpeedStep, int maxHP, int maxShield, int hp)
+        public Ship(int shape, Weapon gun, int maxSpeed, int maxRotateStep, double maxSpeedStep, int maxHP, int maxShield, int hp)
         {
             this.shape = new Shape(shape);
+            this.gun = gun;
             this.maxSpeed = maxSpeed;
             this.maxRotateStep = maxRotateStep;
             this.maxSpeedStep = maxSpeedStep;
