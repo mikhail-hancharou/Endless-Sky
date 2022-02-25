@@ -13,13 +13,14 @@ namespace Endless_Sky
         Space space = new Space();
         Draw draw = new Draw();
         Controls control = new Controls();
-        EnemySpawner spawn = new EnemySpawner(true);
+        EnemySpawner spawn;
         int time = 0;
         int upTime = 0;
 
         public Game(GameWindow window)
         {
             this.window = window;
+            spawn = new EnemySpawner(control, true);
             Start();
         }
 
@@ -95,6 +96,8 @@ namespace Endless_Sky
             {
                 control.reduce(me);
             }
+
+            spawn.enemyIntelligence(me);
         }
 
         void renderF(object o, EventArgs e)
