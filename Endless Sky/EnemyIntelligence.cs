@@ -10,7 +10,7 @@ namespace Endless_Sky
         private double deltaY;
         private double hypotenuse;
         private Player superPlayer;
-        public List<Player> enemies = new List<Player>();
+        public List<Player> enemies;
         private Controls control;
 
         public EnemyIntelligence(Controls control, Player superPlayer, List<Player> enemies)
@@ -73,6 +73,7 @@ namespace Endless_Sky
                 {
                     p.ship.gun.actualRange = (int)hypotenuse;
                     control.shoot(p); //angle between two angels should be less then 15 to start shooting
+                    damage(p, angle);
                 }
 
                 double angleSP = speedAngle(superP);
@@ -98,11 +99,11 @@ namespace Endless_Sky
         {
             angle = (angle / Math.PI) * 180;
 
-            if (X < 0 && Y < 0)
+            if (X < 0 && Y <= 0)//=
             {
                 angle += 180;
             }
-            else if (X < 0 && Y > 0)
+            else if (X < 0 && Y >= 0)//=
             {
                 angle = 180 - angle;
             }
@@ -112,6 +113,15 @@ namespace Endless_Sky
             }
 
             return angle;
+        }
+
+        private void damage(Player p, double angle)
+        {
+            double arc = (Math.PI * p.ship.gun.actualRange * angle) / 180;
+            if (arc <= 10) //circle with r = 10 is hitbox
+            {
+                superPlayer.ship.hp -= p.ship.gun.damagePT;
+            }
         }
     }
 }

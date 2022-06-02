@@ -1,5 +1,8 @@
-﻿using System;
+﻿using OpenTK.Graphics;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace Endless_Sky
@@ -60,9 +63,72 @@ namespace Endless_Sky
             }
         }
 
-        public void shoot(Player player)
+        public void shoot(Player player, EnemySpawner esp = null)
         {
             player.shooting = true;
+
+            if (esp == null)
+            {
+                return;
+            }
+
+            player.ship.gun.actualRange = player.ship.gun.maxRange;
+            var enemies = esp.enemies;
+            foreach (Player p in enemies.ToList())
+            {
+                double deltaX = p.coordX - player.coordX;
+                double deltaY = p.coordY - player.coordY;
+                double hypotenuse = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
+                double angle = Math.Abs(Math.Asin(deltaY / hypotenuse));
+                angle = normalizeAngle(angle, deltaX, deltaY, player);
+
+                if (Math.Abs(angle) <= 10)
+                {
+                    player.ship.gun.actualRange = hypotenuse > player.ship.gun.actualRange ? player.ship.gun.actualRange : hypotenuse;
+                    //player.ship.gun.actualRange = hypotenuse;
+
+                    double arc = (Math.PI * player.ship.gun.actualRange * angle) / 180;
+                    if (arc <= 10 && player.ship.gun.actualRange >= hypotenuse) //circle with r = 10 is hitbox
+                    {
+                        p.ship.hp -= player.ship.gun.damagePT;
+                        player.ship.hp += player.ship.gun.damagePT / 3;
+                        if (p.ship.hp <= 0)
+                        {
+                            esp.enemies.Remove(p);
+                        }
+                    }
+                }
+            }
+        }
+
+        private double normalizeAngle(double angle, double X, double Y, Player player)
+        {
+            angle = (angle / Math.PI) * 180;
+
+            if (X < 0 && Y <= 0)//=
+            {
+                angle += 180;
+            }
+            else if (X < 0 && Y >= 0)//=
+            {
+                angle = 180 - angle;
+            }
+            else if (X > 0 && Y < 0)
+            {
+                angle = 360 - angle;
+            }
+
+            angle -= player.rotateAngel % 360;
+            if (angle > 180)
+            {
+                angle = angle - 360;
+            }
+            else if (angle < -180)
+            {
+                angle = 360 + angle;
+            }
+
+            return angle;
         }
     }
 }

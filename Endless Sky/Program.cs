@@ -1,6 +1,7 @@
 ﻿using System;
 using OpenTK;
 
+
 namespace Endless_Sky
 {
     static class Program

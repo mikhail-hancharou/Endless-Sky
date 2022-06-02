@@ -7,16 +7,16 @@ namespace Endless_Sky
 {
     public class Ship : IDraw
     {
-        public readonly int maxSpeed;
-        public readonly int maxRotateStep;
+        public readonly double maxSpeed;
+        public readonly double maxRotateStep;
         public double maxSpeedStep;
-        public readonly int maxHP;
-        public readonly int maxShield;
-        public int hp;
+        public readonly double maxHP;
+        public readonly double maxShield;
+        public double hp;
         public Shape shape;
         public Weapon gun;
 
-        public Ship(int shape, Weapon gun, int maxSpeed, int maxRotateStep, double maxSpeedStep, int maxHP, int maxShield, int hp)
+        public Ship(int shape, Weapon gun, double maxSpeed, double maxRotateStep, double maxSpeedStep, int maxHP, int maxShield, int hp)
         {
             this.shape = new Shape(shape);
             this.gun = gun;

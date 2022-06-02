@@ -3,6 +3,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
+
 namespace Endless_Sky
 {
     class Game
@@ -11,7 +12,7 @@ namespace Endless_Sky
         //Ship myShip = new Ship(0, 3, 4, 0.3, 350, 0, 350);
         //Weapon gun = new Weapon(40, 2);
         Player me = new Player(new Ship(0, new Weapon(130, 2), 3, 2, 0.3, 350, 0, 350), 0, 0, 90, true);
-        Space space = new Space();
+        Space space;
         Draw draw = new Draw();
         Controls control = new Controls();
         EnemySpawner enemies;
@@ -22,6 +23,7 @@ namespace Endless_Sky
         {
             this.window = window;
             enemies = new EnemySpawner(control, me, true);
+            space = new Space(me, enemies);
             Start();
         }
 
@@ -99,7 +101,7 @@ namespace Endless_Sky
             }
             if (keyState.IsKeyDown(Key.ShiftLeft))
             {
-                control.shoot(me);
+                control.shoot(me, enemies);
             }
 
             enemies.enemyIntelligenceMethod(me);

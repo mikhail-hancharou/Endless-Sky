@@ -8,10 +8,10 @@ namespace Endless_Sky
     public class Weapon
     {
         public readonly int maxRange;
-        public int actualRange;
-        public readonly int damagePT;//damage per tick
+        public double actualRange;
+        public readonly double damagePT;//damage per tick
 
-        public Weapon(int maxRange, int damagePT)
+        public Weapon(int maxRange, double damagePT)
         {
             this.maxRange = maxRange;
             this.damagePT = damagePT;

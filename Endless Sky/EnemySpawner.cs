@@ -6,7 +6,7 @@ namespace Endless_Sky
 {
     public class EnemySpawner : IDraw
     {
-        const int maxAmount = 3;
+        const int maxAmount = 5;
         public int currentAmount = 0;
         public List<Player> enemies = new List<Player>();
         private Controls control;
@@ -29,15 +29,15 @@ namespace Endless_Sky
                 int hp = 350;
                 int coordX = 50;
                 int coordY = -50;
-                for (int i = 1; i <= maxAmount; i++)
+                for (int i = 1; i <= 3; i++)
                 {
                     int shape = i;
 
-                    Player player = new Player(new Ship(shape, new Weapon(130, 2), maxSpeed++, maxRotateStep++,
+                    Player player = new Player(new Ship(shape, new Weapon(130, 0.2), maxSpeed++, maxRotateStep++,
                         maxSpeedStep, maxHP, maxShield, hp), coordX, coordY, 90, false);
                     coordY += 50;
 
-                    enemies.Add(player);
+                    //enemies.Add(player);
                 }
 
                 enemyIntelligence = new EnemyIntelligence(control, superPlayer, enemies);
@@ -52,9 +52,42 @@ namespace Endless_Sky
             }
         }
 
-        public void enemyIntelligenceMethod(Player superPlayer)
+        private void Spawn()
         {
-            enemyIntelligence.enemiesLogic(superPlayer);
+            Random rnd = new Random();
+            int temp = rnd.Next(86);
+            temp += (int)Math.Pow((maxAmount - enemies.Count + 1), 2);
+            if (temp >= 90 && rnd.Next(100) > 95)
+            {
+                double maxSpeed = 1.5 + rnd.NextDouble();
+                double maxRotateStep = 2 + rnd.NextDouble() * 2;
+                double maxSpeedStep = 0.2 + rnd.NextDouble() / 4;
+                int maxHP = 300 + rnd.Next(150);
+                int maxShield = 0;
+                int hp = maxHP;
+                double coordX = rnd.Next(-800, 800) + superPlayer.coordX;
+                double coordY = Math.Abs(coordX) < 520 ? rnd.Next(350, 500) : rnd.Next(500) + superPlayer.coordY;
+                if (rnd.Next(1, 11) > 5)
+                {
+                    coordY *= -1;
+                }
+                int shape = rnd.Next(1, 4);
+                Player player = new Player(new Ship(shape, new Weapon(130, 0.2), maxSpeed, maxRotateStep,
+                maxSpeedStep, maxHP, maxShield, hp), coordX, coordY, 90, false);
+                enemies.Add(player);            
+            }
+        }
+
+        public void enemyIntelligenceMethod(Player superPlayer) //TODO can remove in parametr
+        {
+            if (enemies.Count != maxAmount)
+            {
+                Spawn();
+            }
+            if (enemies.Count != 0)
+            {
+                enemyIntelligence.enemiesLogic(superPlayer);
+            }
             //foreach (Player p in enemies)
             //{
             //    if (!p.team)
